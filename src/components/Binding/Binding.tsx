@@ -148,7 +148,8 @@ export default function Binding() {
                                         </a> : <span className="item_detail">Chưa Binding</span>}
                                     </td>
                                     {/* <td>{item.groupId ? <></> : <span className="delete_device delete_device_btn">Delete</span>}</td> */}
-                                    <td>{item.groupId ? <span className="delete_device delete_device_btn">                                        <Popconfirm
+                                    <td>{item.groupId ? <span className="delete_device delete_device_btn">                                        
+                                    <Popconfirm
                                         placement="top"
                                         title={text}
                                         description={description}

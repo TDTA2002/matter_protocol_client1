@@ -85,7 +85,7 @@ export default function AddBinding(props: Props) {
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" data-mdb-dismiss="modal">Đóng</button>
-                                <button type='submit' className="btn btn-primary" data-mdb-dismiss="modal">Lưu</button>
+                                <button type='submit' className="btn_save_device" data-mdb-dismiss="modal">Lưu</button>
                             </div>
                         </div>
                     </form>

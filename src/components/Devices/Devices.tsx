@@ -3,7 +3,7 @@ import './devices.scss'
 import { useDispatch, useSelector, useStore } from 'react-redux'
 import { StoreType } from '@/store'
 import QrCode from './component/QrCode'
-import { message } from 'antd'
+import { Popconfirm, message } from 'antd'
 import AddDevice from '../AddDevice/AddDevice'
 import { ListBinding } from '@/store/slices/user.slices'
 import { useNavigate } from 'react-router'
@@ -46,7 +46,8 @@ export default function Productlist() {
     const [add, setAdd] = useState(true)
     const [count, setCount] = useState(1)
     const [search, setSearch] = useState('')
-
+    const text = 'Are you sure to unpair this Device?';
+    const description = 'Unpair the Device';
     const [loadingState, setLoadingState] = useState<Record<string, boolean>>({});
     useEffect(() => {
         if (userStore.Device && userStore.Device.length > 0) {
@@ -209,10 +210,12 @@ export default function Productlist() {
             if (notification != "") {
                 message.error(notification)
             }
+
         })
     }, [])
 
     function handleUnpair(id: string, node_id: number) {
+
         setUnpairId(id)
         if (userStore.socket) {
             userStore.socket.emit("unpairDevice", {
@@ -220,6 +223,9 @@ export default function Productlist() {
                 id: id,
                 node_id: node_id
             })
+            message.success("Ngắt kết nối thành công")
+        } else {
+            message.warning("Kết nối máy chủ không thành công")
         }
     }
     function handleShowChart(id: string) {
@@ -234,18 +240,15 @@ export default function Productlist() {
         userStore.socket?.on('unpairScuces', (message2) => {
             if (message2 != "") {
                 console.log("đã unpair", message2);
-                message.success(message2)
+                // message.success(message2)
                 const localStorageData = localStorage.getItem('decodeData');
                 if (localStorageData != undefined) {
                     const dataArray = JSON.parse(localStorageData);
-                    console.log(dataArray);
-
                     for (let i in dataArray) {
                         const parts = dataArray[i].id
                         if (parts != "") {
                             const tempId = parts
                             if (tempId == unpairId) {
-                                console.log("message", message2);
                                 dataArray.splice(dataArray[i], 1);
                                 setUnpairId("")
                             }
@@ -327,12 +330,17 @@ export default function Productlist() {
                                         <button className="status completed" onClick={() => handleSearchQrCode(item.node_id, item.id)}>
                                             {loadingState[item.id] ? <span className='loading-spinner'></span> : "Share Connect"}
                                         </button>
-                                        <button className="status delete"
-                                            onClick={() => {
-                                                handleUnpair(item.id, item.node_id)
-
-                                            }}
-                                        >Unpair</button>
+                                        <Popconfirm
+                                            placement="top"
+                                            title={text}
+                                            description={description}
+                                            onConfirm={() => handleUnpair(item.id, item.node_id)}
+                                            okText={<span className="custom-ok-button">Yes</span>}
+                                            cancelText="No"
+                                        >
+                                            <button className="status delete"
+                                            >Unpair</button>
+                                        </Popconfirm>
                                         <button className="status pending" onClick={() => {
                                             handleShowChart(item.id)
                                             navigate("/chart")
