@@ -34,7 +34,7 @@ export default function QrCode(props: Props) {
 
             >
                 <QRCode value={modalText} size={128} />
-                <span>{modalText}</span>
+                {/* <span>{modalText}</span> */}
             </Modal>
         </>
     );
