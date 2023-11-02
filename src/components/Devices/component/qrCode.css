@@ -1,0 +1,10 @@
+.ant-btn-primary {
+    display: none
+}
+
+.ant-modal-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 0
+}

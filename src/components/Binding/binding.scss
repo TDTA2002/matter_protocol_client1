@@ -1,0 +1,198 @@
+.modal {
+    &.fade {
+        .modal-dialog {
+            form {
+                .modal-content {
+                    width: 900px;
+                    position: relative;
+                    right: 39%;
+
+                    .modal-header {
+                        h1 {
+                            font-size: 24px;
+                        }
+
+                        .btn-close {
+                            position: absolute;
+                            top: 10px;
+                            right: 10px;
+                            font-size: 20px; // Cỡ chữ cho nút đóng modal
+                            background-color: transparent;
+                            border: none;
+                            cursor: pointer;
+                            color: #000;
+                            transition: color 0.2s;
+
+                            &:hover {
+                                color: #ff0000; // Màu chữ khi hover
+                            }
+                        }
+                    }
+
+                    .modal-body {
+                        .detailproduct {
+                            display: flex;
+                            justify-content: space-evenly;
+                        }
+
+                        div {
+                            // CSS cho từng phần tử trong modal body
+                            &:first-child {
+                                // CSS cho phần chọn Category
+                                select {
+                                    width: 400px;
+                                    padding: 10px;
+                                    border: 1px solid #ccc;
+                                    border-radius: 5px;
+                                    outline: none;
+                                    font-size: 16px;
+                                }
+                            }
+
+                            &:nth-child(2) {
+                                // CSS cho phần nhập Name
+                                input {
+                                    width: 400px;
+                                    padding: 10px;
+                                    border: 1px solid #ccc;
+                                    border-radius: 5px;
+                                    outline: none;
+                                    font-size: 16px;
+                                }
+                            }
+
+                            &:nth-child(3) {
+                                // CSS cho phần nhập Des
+                                input {
+                                    width: 400px;
+                                    padding: 10px;
+                                    border: 1px solid #ccc;
+                                    border-radius: 5px;
+                                    outline: none;
+                                    font-size: 16px;
+                                }
+                            }
+
+                            &:nth-child(4) {
+                                // CSS cho phần nhập Price
+                                input {
+                                    width: 400px;
+                                    padding: 10px;
+                                    border: 1px solid #ccc;
+                                    border-radius: 5px;
+                                    outline: none;
+                                    font-size: 16px;
+                                }
+                            }
+
+                            &:nth-child(5) {
+                                // CSS cho phần nhập Avatar
+                                input[type="file"] {
+                                    width: auto;
+                                    padding: 10px;
+                                    outline: none;
+                                    font-size: 16px;
+                                }
+
+                                img {
+                                    display: block;
+                                    width: 100px;
+                                    height: 100px;
+                                    border-radius: 50%;
+                                    margin-top: 10px;
+                                }
+                            }
+
+                            &:last-child {
+                                // CSS cho phần nhập Pictures
+                                input[type="file"] {
+                                    width: auto;
+                                    padding: 10px;
+                                    outline: none;
+                                    font-size: 16px;
+                                }
+
+                                div {
+                                    img {
+                                        display: inline-block;
+                                        width: 100px;
+                                        height: 100px;
+                                        border-radius: 50%;
+                                        margin-right: 10px;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    .modal-footer {
+                        button {
+                            &.btn-secondary {
+                                background-color: #ccc;
+                                color: #000;
+                                font-size: 16px;
+                                padding: 10px 20px;
+                                border: none;
+                                border-radius: 5px;
+                                cursor: pointer;
+                                transition: background-color 0.2s;
+
+                                &:hover {
+                                    background-color: #999; // Màu nền khi hover
+                                }
+                            }
+
+                            &.btn-primary {
+                                background-color: #007bff;
+                                color: #fff;
+                                font-size: 16px;
+                                padding: 10px 20px;
+                                border: none;
+                                border-radius: 5px;
+                                cursor: pointer;
+                                transition: background-color 0.2s;
+
+                                &:hover {
+                                    background-color: #0056b3; // Màu nền khi hover
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.loading-spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(201, 193, 193, 0.3);
+    border-radius: 50%;
+    border-top-color: #ffffff;
+    animation: spin 1s infinite linear;
+}
+.add_btn {
+    background-color: #3c91e6;
+    padding: 8px 16px;
+    border-radius: 20px;
+    color: white;
+}
+.group_detail {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    justify-content: center;
+    .group_btn_detail {
+        background-color: #3c91e6;
+        padding: 8px 16px;
+        border-radius: 20px;
+        color: white;
+    }
+}
+.group_detail_th {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
