@@ -3,7 +3,7 @@ import './devices.scss'
 import { useDispatch, useSelector, useStore } from 'react-redux'
 import { StoreType } from '@/store'
 import QrCode from './component/QrCode'
-import { message } from 'antd'
+import { Switch, message } from 'antd'
 import AddDevice from '../AddDevice/AddDevice'
 import { ListBinding } from '@/store/slices/user.slices'
 import { useNavigate } from 'react-router'
@@ -258,6 +258,9 @@ export default function Productlist() {
             }
         })
     }, [unpairId])
+    const [active, setActive] = useState(true)
+    console.log("active", active);
+
 
     return (
         <main>
@@ -337,6 +340,10 @@ export default function Productlist() {
                                             handleShowChart(item.id)
                                             navigate("/chart")
                                         }}>Detail</button>
+                                    </td>
+                                    <td>
+                                        <Switch checked={active} />
+
                                     </td>
                                 </tr>
                             ))}

@@ -88,12 +88,10 @@ export default function ListUserDevice({ user }: User) {
 
   };
   const toggleActiceStatus = (userId: number) => {
-
     setActive((prevStatus) => ({
       ...prevStatus,
       [userId]: !prevStatus[userId],
     }));
-
   };
 
   return (
