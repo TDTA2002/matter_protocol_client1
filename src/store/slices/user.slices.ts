@@ -70,6 +70,13 @@ export interface ListU {
     email: string;
     role: UserRole;
 }
+export interface ListPerById {
+    id: string;
+    name: string;
+    user_id: string;
+    node_id: number;
+    active: boolean;
+}
 export interface UserState {
     data: User | null;
     reLoad: boolean;
@@ -78,7 +85,8 @@ export interface UserState {
     ListBinding: null | ListBinding[];
     Chart: null | ListChart[];
     ListUser: null | ListUser[];
-    ListU: null | ListU[]
+    ListU: null | ListU[];
+    ListPerById: null | ListPerById[]
 }
 
 export const initialState: UserState = {
@@ -89,7 +97,8 @@ export const initialState: UserState = {
     ListBinding: null,
     Chart: null,
     ListUser: null,
-    ListU: null
+    ListU: null,
+    ListPerById: null
 
 };
 
@@ -143,6 +152,12 @@ const userSlice = createSlice({
             return {
                 ...state,
                 ListU: action.payload
+            }
+        },
+        setListPerById: function (state, action) {
+            return {
+                ...state,
+                ListPerById: action.payload
             }
         }
     }

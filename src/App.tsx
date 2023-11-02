@@ -30,32 +30,28 @@ function App() {
         })
         socket.on("disconnect", () => {
           dispatch(userAction.setData(null))
-          console.log("đã out")
         })
-        socket.on("receiveUserData", (user: User) => {  
-          console.log("user", user);
+        socket.on("receiveUserData", (user: User) => {
 
           dispatch(userAction.setData(user))
         })
         socket.on("receiveDevice", (device: Device[]) => {
           dispatch(userAction.setDevice(device))
-          console.log("device", device);
         })
         socket.on("receiveBinding", (ListBinding: ListBinding[]) => {
           dispatch(userAction.setListBinding(ListBinding))
-          console.log("ListBinding", ListBinding);
         })
         socket.on("showChartList", (chart: Chart[]) => {
-          console.log("showChartList", chart);
           dispatch(userAction.setChart(chart))
         })
         socket.on("listUser", (ListUser: ListUser[]) => {
-          console.log("listUser", ListUser);
           dispatch(userAction.setUser(ListUser))
         })
         socket.on("listU", (ListU: ListU[]) => {
-          console.log("listU", ListU);
           dispatch(userAction.setListU(ListU))
+        })
+        socket.on("showListPerByid", (ListPerByid: ListU[]) => {
+          dispatch(userAction.setListPerById(ListPerByid))
         })
         dispatch(userAction.setSocket(socket))
       }

@@ -142,7 +142,7 @@ export default function FormUser() {
                         }}>
                             <input name='userNameOrEmail' type="text" placeholder="Email address" required />
                             <input name='password' type="password" placeholder="Password" required />
-                            <a href="#">Forgot password?</a>
+                            <a href="/resetpassword">Forgot password?</a>
                             <input type="submit" defaultValue="Login" />
                         </form>
                     </div>
