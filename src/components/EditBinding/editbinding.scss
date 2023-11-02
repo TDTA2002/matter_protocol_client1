@@ -1,0 +1,46 @@
+.detailproduct {
+    min-height: 200px;
+    display: flex;  
+    .left_container {
+        height: 100%;
+        width: 40%;
+        padding: 0 15px;
+        .group_name {
+            span {
+                font-size: 32px;
+                padding: 4px 0 8px 12px;
+            }
+        }
+        .group_list {
+            .group_list_title {
+                font-size: 20px;
+                display: flex;
+                padding: 12px 0 20px 0;
+            }
+            .group_item {
+                font-size: 18px;
+                .item_index {
+                    padding-right: 12px;
+                }
+            }
+        }
+    }
+    .right_container {
+        height: 100%;
+        width: 40%;
+        padding: 0 15px;
+        .list_device {
+            .list_device_title {
+                font-size: 32px;
+                padding: 4px 0 8px 12px;
+            }
+            .list_device_item {
+                font-size: 18px;
+                margin-top: 8px;
+                .device_index {
+                    padding-right: 12px;
+                }
+            }
+        }
+    }
+}

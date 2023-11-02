@@ -2,58 +2,87 @@ import { FormEvent, useEffect, useRef, useState } from 'react';
 import Input from 'antd/es/input/Input';
 import { useSelector } from 'react-redux';
 import { StoreType } from '@/store';
-import { Device } from '@/store/slices/user.slices';
-import "./editbinding.scss"
+// import { Device } from '@/store/slices/user.slices';
+import "./editbinding.scss";
 
 type InputRef = {
     input: HTMLInputElement;
 };
+
 interface Props {
     groupId: string;
     setGroupId: (groupId: string) => void;
+    listDevice: Device[];
+}
+interface Device {
+    id: string;
+    name: string;
+    user_device_id: string;
+    node_id: number;
+    status: boolean;
+    power: number;
+    groupName: string;
+    groupId: string;
 }
 export default function EditBinding(props: Props) {
-    console.log("props", props);
-
     const userStore = useSelector((store: StoreType) => {
-        return store.userStore
-    })
-    console.log("ustore", userStore.Device);
-    const [listDevice, setListDevice] = useState<Device[]>([]);
+        return store.userStore;
+    });
+
+    const filteredDevices = props.listDevice.filter(item => item.groupId === props.groupId);
+    const devicesWithoutGroup = props.listDevice.filter(item => !item.groupId);
+
+    const [selectedDevices, setSelectedDevices] = useState<string[]>([]);
+
     const nameRef = useRef<InputRef | null>(null);
+
     useEffect(() => {
-        if (userStore.Device && userStore.Device.length > 0) {
-            setListDevice(userStore.Device);
+        if (filteredDevices.length > 0) {
+            const defaultName = filteredDevices[0].groupName;
+            if (nameRef.current) {
+                nameRef.current.input.value = defaultName;
+            }
         }
-    }, [userStore.Device]);
-    console.log("listDevice", listDevice);
+    }, [filteredDevices]);
 
-
-
-
-
-    const handleCreate = (e: FormEvent) => {
+    const handleEdit = (e: FormEvent) => {
         e.preventDefault();
+
+        // Lọc ra các thiết bị đã được chọn
+        const selectedDeviceIds = devicesWithoutGroup
+            .filter(item => selectedDevices.includes(item.id))
+            .map(item => item.id); // Extract 'id' from each object
 
         if (nameRef.current) {
             const formData = {
                 name: nameRef.current.input.value,
+                deviceIds: selectedDeviceIds.join('+'),
+                id: props.groupId,
             };
-            console.log("formData", formData);
+
             if (formData) {
                 if (userStore.socket) {
-                    userStore.socket.emit('addBinding', formData);
+                    userStore.socket.emit('EditBinding', formData);
                     nameRef.current.input.value = '';
+                    setSelectedDevices([]); // Đặt lại danh sách thiết bị đã chọn
                 }
             }
         }
     }
 
+    const handleDeviceSelection = (deviceId: string) => {
+        if (selectedDevices.includes(deviceId)) {
+            setSelectedDevices(selectedDevices.filter(id => id !== deviceId));
+        } else {
+            setSelectedDevices([...selectedDevices, deviceId]);
+        }
+    }
+
     return (
         <>
-            <div className="modal fade" id="exampleModal" tabIndex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div className="modal fade" id="EditModal" tabIndex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog">
-                    <form onSubmit={(e: FormEvent) => handleCreate(e)}>
+                    <form onSubmit={(e: FormEvent) => handleEdit(e)}>
                         <div className="modal-content">
                             <div className="modal-header">
                                 <h1>Thêm Sản Phẩm</h1>
@@ -61,21 +90,36 @@ export default function EditBinding(props: Props) {
                             </div>
                             <div className="modal-body">
                                 <div className='detailproduct'>
-                                    <div>
-                                        <div>
-                                            Tên <br />
-                                            <Input name="name" type="text" placeholder='Tên' ref={nameRef ?? null} />
+                                    <div className='left_container'>
+                                        <div className='group_name'>
+                                            <span>Tên Group</span>
+                                            <Input name="name" type="text" placeholder='Tên' ref={nameRef} />
+                                        </div>
+                                        <div className='group_list'>
+                                            <span className='group_list_title'>Danh sách thiết bị của group.</span>
+                                            {filteredDevices?.map((item, index) => (
+                                                <div className='group_item' key={item.id}>
+                                                    <span className='item_index'>{index + 1} :</span>
+                                                    <span className='item_name'>{item.name}</span>
+                                                </div>
+                                            ))}
                                         </div>
                                     </div>
-                                    <div>
-                                        <span>Danh sách thiết bị.</span>
-                                        {/* {selectedDevices.map((item, index) => (
-                                            <div className='itemBinding' key={Date.now() * Math.random()}>
-                                                <span>{index + 1} :</span>
-                                                <span>{item.name}</span>
-                                            </div>
-                                        ))} */}
-
+                                    <div className='right_container'>
+                                        <div className='list_device'>
+                                            <span className='list_device_title'>Thêm thiết bị</span>
+                                            {devicesWithoutGroup?.map((item, index) => (
+                                                <div className='list_device_item' key={item.id}>
+                                                    <span className='device_index'>{index + 1} :</span>
+                                                    <span className='device_name'>{item.name}</span>
+                                                    <input className='check_box'
+                                                        type="checkbox"
+                                                        onChange={() => handleDeviceSelection(item.id)}
+                                                        checked={selectedDevices.includes(item.id)}
+                                                    />
+                                                </div>
+                                            ))}
+                                        </div>
                                     </div>
                                 </div>
                             </div>

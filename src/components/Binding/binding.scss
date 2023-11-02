@@ -150,11 +150,42 @@
     animation: spin 1s infinite linear;
 }
 
-.add_btn {
+.add_btn_device {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    background-color: #3c91e6;
+    margin-top: 20px !important;
+    padding: 8px 16px;
+    border-radius: 20px;
+    color: white;
+    width: 140px !important;
+}
+.list_device_item {
+    align-items: center;
+    display: flex;
+    .device_index {
+        display: inline-block;
+        width: 60px;
+    }
+    .device_name {
+        width: 200px;
+    }
+    .check_box {
+        height: 30%;
+    }
+}
+.detail_btn {
+
     background-color: #3c91e6;
     padding: 8px 16px;
     border-radius: 20px;
     color: white;
+}
+
+.item_detail {
+    padding: 8px 16px;
 }
 
 .group_detail {
@@ -176,3 +207,20 @@
     justify-content: center;
     align-items: center;
 }
+.check_device {
+    width: 100px;
+}
+.name_device {
+    width: 300px;
+}
+.delete_device_btn {
+    background-color: red;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+.delete_device{
+    padding-left: 12px;
+}
+
