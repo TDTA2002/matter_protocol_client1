@@ -74,7 +74,6 @@ export default function UserDevice() {
                         <i className="bx bx-filter" />
                     </div>
                     <table>
-
                         <thead>
                             <tr>
                                 <th>STT</th>
