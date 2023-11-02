@@ -47,7 +47,7 @@ export default function UserDevice() {
                     <h1>User</h1>
                     <ul className="breadcrumb">
                         <li>
-                            <a href="#">Dashboard</a>
+                            <a href="#">Home</a>
                         </li>
                         <li>
                             <i className="bx bx-chevron-right" />
@@ -62,7 +62,7 @@ export default function UserDevice() {
                 <a href="#" className="btn-download">
                     <i className="bx bxs-cloud-download" />
                     <span className="text" data-mdb-toggle="modal"
-                        data-mdb-target="#exampleModal">Add New</span>
+                        data-mdb-target="#exampleModal">Add member</span>
                 </a>
                 <AddUser />
             </div>
