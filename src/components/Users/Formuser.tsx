@@ -52,11 +52,8 @@ export default function FormUser() {
         apis.userApi.login(user)
             .then(res => {
                 if (res.status == 200) {
-                    message.success(res.status);
-                    console.log("Login thành công");
-
+                    message.success("Login success");
                     localStorage.setItem("token", res.data.token);
-                    console.log("ressss111", res, userAction);
                     dispatch(userAction.reload());
                 } else {
                     message.warning(res.data.message)
@@ -75,7 +72,7 @@ export default function FormUser() {
     }
     useEffect(() => {
         if (userStore.data) {
-            navigate("/")
+            navigate("/device")
         }
     }, [userStore.data])
     async function handleRegister(e: React.FormEvent) {
@@ -128,10 +125,6 @@ export default function FormUser() {
                             <input name='email' type="email" placeholder="Email address" required />
                             <input name='password' type="password" placeholder="Password" required />
                             <input name='confirmpassword' type="password" placeholder="Password" required />
-                            <div className="checkbox">
-                                <input type="checkbox" id="signupCheck" />
-                                <label htmlFor="signupCheck">I accept all terms &amp; conditions</label>
-                            </div>
                             <input type="submit" defaultValue="Signup" />
                         </form>
                     </div>

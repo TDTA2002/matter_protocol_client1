@@ -75,23 +75,23 @@ export default function Binding() {
         <main>
             <div className="head-title">
                 <div className="left">
-                    <h1>Products</h1>
+                    <h1>Binding</h1>
                     <ul className="breadcrumb">
                         <li>
-                            <a >Dashboard</a>
+                            <a >Home</a>
                         </li>
                         <li>
                             <i className="bx bx-chevron-right" />
                         </li>
                         <li>
                             <a className="active" >
-                                Products
+                                Binding
                             </a>
                         </li>
                     </ul>
                 </div>
 
-                <a className="btn-download">
+                {/* <a className="btn-download">
                     <i className="bx bxs-cloud-download" />
                     <span
                         className="text"
@@ -100,7 +100,7 @@ export default function Binding() {
                     >
                         Add New
                     </span>
-                </a>
+                </a> */}
             </div>
 
             <div className="table-data">
@@ -148,7 +148,8 @@ export default function Binding() {
                                         </a> : <span className="item_detail">Chưa Binding</span>}
                                     </td>
                                     {/* <td>{item.groupId ? <></> : <span className="delete_device delete_device_btn">Delete</span>}</td> */}
-                                    <td>{item.groupId ? <span className="delete_device delete_device_btn">                                        <Popconfirm
+                                    <td>{item.groupId ? <span className="delete_device delete_device_btn">                                        
+                                    <Popconfirm
                                         placement="top"
                                         title={text}
                                         description={description}
