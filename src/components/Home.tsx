@@ -141,8 +141,16 @@ const Sidebar = () => {
           <>
             <a href="#" className="brand">
               <i className="bx bxs-smile" />
-              <span className="text">Admin</span>
+              <span className="text">{userStore.data?.userName}</span>
             </a>
+            <ul className="side-menu top">
+              <li className={activeMenuItem === 1 ? 'active' : ''}>
+                <Link to={"/device"} onClick={() => handleMenuItemClick(1)}>
+                  <i className="bx bxs-shopping-bag-alt" />
+                  <span className="text">Device</span>
+                </Link>
+              </li>
+            </ul>
             <ul className="side-menu">
               <li>
                 <a href="#" className="logout">

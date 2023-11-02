@@ -3,7 +3,7 @@ import './devices.scss'
 import { useDispatch, useSelector, useStore } from 'react-redux'
 import { StoreType } from '@/store'
 import QrCode from './component/QrCode'
-import { Switch, message,Popconfirm } from 'antd'
+import { Switch, message, Popconfirm } from 'antd'
 import AddDevice from '../AddDevice/AddDevice'
 import { ListBinding } from '@/store/slices/user.slices'
 import { useNavigate } from 'react-router'
@@ -17,7 +17,13 @@ interface Device {
     power: number;
     groupName: string;
     groupId: string;
-    // timeCreate: string;
+    active: boolean;
+}
+interface DeviceUser {
+    id: string;
+    name: string;
+    user_id: string;
+    node_id: number;
     active: boolean;
 }
 
@@ -272,8 +278,12 @@ export default function Productlist() {
             }
         }
     };
-    console.log("listDevice", listDevice);
+    // const [listDevice, setListDevice] = useState<DeviceUser[]>([]);
+    // const [isOn, setIsOn] = useState(false);
 
+    // const toggleSwitch = () => {
+    //     setIsOn(!isOn);
+    // };
 
     return (
         <main>
@@ -295,8 +305,19 @@ export default function Productlist() {
                         </li>
                     </ul>
                 </div>
+                <a className="btn-download">
+                    <i className="bx bxs-cloud-download" />
+                    <span
+                        className="text"
+                        data-mdb-toggle="modal"
+                        data-mdb-target="#exampleModal"
+                    >
+                        Add New
+                    </span>
+                </a>
+                <AddDevice />
             </div>
-            <AddDevice />
+
 
             <div className="table-data">
                 <div className="order">
@@ -325,7 +346,7 @@ export default function Productlist() {
                                         <span>{index + 1}</span>
                                     </td>
                                     <td>
-                                        <p><input type="text" defaultValue={item.name} /></p>
+                                        <p>{item.name}</p>
                                     </td>
                                     <td>
                                         <p>{item.power} W/h</p>

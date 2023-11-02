@@ -60,19 +60,19 @@ export default function AddBinding(props: Props) {
                     <form onSubmit={(e: FormEvent) => handleCreate(e)}>
                         <div className="modal-content">
                             <div className="modal-header">
-                                <h1>Thêm Sản Phẩm</h1>
+                                <h1>Add Binding</h1>
                                 <button type="button" className="btn-close" data-mdb-dismiss="modal" aria-label="Close" />
                             </div>
                             <div className="modal-body">
                                 <div className='detailproduct'>
                                     <div>
                                         <div>
-                                            Tên <br />
+                                            Name <br />
                                             <Input name="name" type="text" placeholder='Tên' ref={nameRef} />
                                         </div>
                                     </div>
                                     <div>
-                                        <span>Danh sách thiết bị.</span>
+                                        <span>Binding</span>
                                         {selectedDevices.map((item, index) => (
                                             <div className='itemBinding' key={Date.now() * Math.random()}>
                                                 <span>{index + 1} :</span>
@@ -84,8 +84,8 @@ export default function AddBinding(props: Props) {
                                 </div>
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" data-mdb-dismiss="modal">Đóng</button>
-                                <button type='submit' className="btn_save_device" data-mdb-dismiss="modal">Lưu</button>
+                                <button type="button" className="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+                                <button type='submit' className="btn_save_device" data-mdb-dismiss="modal">Save</button>
                             </div>
                         </div>
                     </form>
