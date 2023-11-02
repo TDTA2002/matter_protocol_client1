@@ -7,7 +7,7 @@ import { message } from 'antd'
 import AddDevice from '../AddDevice/AddDevice'
 import { ListBinding } from '@/store/slices/user.slices'
 import { useNavigate } from 'react-router'
-import { userAction } from "@/store/slices/user.slices"
+
 interface Device {
     id: string;
     name: string;
@@ -28,8 +28,8 @@ export default function Productlist() {
     const userStore = useSelector((store: StoreType) => {
         return store.userStore
     })
-    console.log('userStore',userStore);
-    
+    console.log('userStore', userStore);
+
     const dispath = useDispatch()
     const navigate = useNavigate()
     const [statust, setStatus] = useState()
@@ -47,7 +47,6 @@ export default function Productlist() {
     const [count, setCount] = useState(1)
     const [search, setSearch] = useState('')
 
-   
     const [loadingState, setLoadingState] = useState<Record<string, boolean>>({});
     useEffect(() => {
         if (userStore.Device && userStore.Device.length > 0) {
@@ -62,6 +61,10 @@ export default function Productlist() {
     useEffect(() => {
         if (shouldUpdateListDevice) {
             if (listDevice && listBinding) {
+                console.log("listDevice", listDevice);
+                console.log("listBinding", listBinding);
+
+
                 const updatedListDevice = listDevice.map((device) => {
                     const matchingBinding = listBinding.find((binding) => binding.bindingDevice.id === device.id);
                     if (matchingBinding) {
@@ -95,7 +98,7 @@ export default function Productlist() {
                             console.log("isWithin10Minutes", isWithin10Minutes);
                             console.log("time", time);
                             if (isWithin10Minutes) {
-                                 setLoadingState((prevState) => ({ ...prevState, [tempId]: false }));
+                                setLoadingState((prevState) => ({ ...prevState, [tempId]: false }));
                                 // mã QR còn hạn => show mã
                                 setQR_Code(a)
                                 setShowModal(true)
@@ -230,6 +233,8 @@ export default function Productlist() {
     useEffect(() => {
         userStore.socket?.on('unpairScuces', (message2) => {
             if (message2 != "") {
+                console.log("đã unpair", message2);
+                message.success(message2)
                 const localStorageData = localStorage.getItem('decodeData');
                 if (localStorageData != undefined) {
                     const dataArray = JSON.parse(localStorageData);
@@ -241,7 +246,6 @@ export default function Productlist() {
                             const tempId = parts
                             if (tempId == unpairId) {
                                 console.log("message", message2);
-                                message.success(message2)
                                 dataArray.splice(dataArray[i], 1);
                                 setUnpairId("")
                             }
@@ -334,7 +338,6 @@ export default function Productlist() {
                                             navigate("/chart")
                                         }}>Detail</button>
                                     </td>
-                                  
                                 </tr>
                             ))}
                         </tbody>

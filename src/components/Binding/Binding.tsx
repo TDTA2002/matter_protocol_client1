@@ -4,8 +4,7 @@ import { StoreType } from "@/store";
 import { useEffect, useState } from "react";
 import { ListBinding } from "@/store/slices/user.slices";
 import AddBinding from "../AddBinding/AddBinding";
-// import { Device } from "@/store/slices/user.slices"
-import { message } from "antd";
+import { message, Popconfirm } from "antd";
 import EditBinding from "../EditBinding/EditBinding";
 interface Device {
     id: string;
@@ -24,11 +23,16 @@ export default function Binding() {
     const [selectedDevices, setSelectedDevices] = useState<string[]>([]);
     const [showMessage, setShowMessage] = useState(false);
     const [groupId, setGroupId] = useState("");
-
+    const text = 'Are you sure to delete this Group?';
+    const description = 'Delete the group';
     const userStore = useSelector((store: StoreType) => {
         return store.userStore;
     });
+    console.log("userStore", userStore);
+    
     useEffect(() => {
+        console.log("da vao remove 1", userStore.Device);
+        
         if (userStore.Device && userStore.Device.length > 0) {
             setListDevice(userStore.Device);
             setShouldUpdateListDevice(true);
@@ -38,8 +42,9 @@ export default function Binding() {
             setShouldUpdateListDevice(true);
         }
     }, [userStore.Device, userStore.ListBinding]);
-
     useEffect(() => {
+        console.log("da vao remove 2");
+
         if (shouldUpdateListDevice) {
             if (listDevice && listBinding) {
                 const updatedListDevice = listDevice.map((device) => {
@@ -54,9 +59,6 @@ export default function Binding() {
             }
         }
     }, [shouldUpdateListDevice, listDevice, listBinding]);
-    console.log("listDevice", listDevice);
-    console.log("listBinding", listBinding);
-
     const handleDeviceSelection = (deviceId: string) => {
         if (selectedDevices.includes(deviceId)) {
             setSelectedDevices(selectedDevices.filter(id => id !== deviceId));
@@ -64,6 +66,11 @@ export default function Binding() {
             setSelectedDevices([...selectedDevices, deviceId]);
         }
     };
+    const removeGroup = async (groupId: string) => {
+        if (userStore.socket) {
+            userStore.socket.emit("removeBinding", groupId)
+        }
+    }
     return (
         <main>
             <div className="head-title">
@@ -71,20 +78,20 @@ export default function Binding() {
                     <h1>Products</h1>
                     <ul className="breadcrumb">
                         <li>
-                            <a href="#">Dashboard</a>
+                            <a >Dashboard</a>
                         </li>
                         <li>
                             <i className="bx bx-chevron-right" />
                         </li>
                         <li>
-                            <a className="active" href="#">
+                            <a className="active" >
                                 Products
                             </a>
                         </li>
                     </ul>
                 </div>
 
-                <a href="#" className="btn-download">
+                <a className="btn-download">
                     <i className="bx bxs-cloud-download" />
                     <span
                         className="text"
@@ -106,10 +113,11 @@ export default function Binding() {
                     <table>
                         <thead>
                             <tr>
-                                <th>Default</th>
-                                <th>Name</th>
+                                <th className="check_device"></th>
+                                <th className="name_device">Name</th>
                                 <th>Power</th>
                                 <th className="group_detail_th">Detail</th>
+                                <th className="delete_device">Delete</th>
                                 <th>Group Name</th>
                                 <th>Status</th>
                             </tr>
@@ -117,52 +125,61 @@ export default function Binding() {
                         <tbody>
                             {listDevice?.map((item: any) => (
                                 <tr key={Date.now() * Math.random()}>
-                                    <td>
+                                    <td className="check_device">
                                         {item.groupName ? <></> : <input
                                             type="checkbox"
                                             onChange={() => handleDeviceSelection(item.id)}
                                             checked={selectedDevices.includes(item.id)}
                                         />}
                                     </td>
-                                    <td>
+                                    <td className="name_device">
                                         <p>
-                                            <input
-                                                type="text"
-                                                defaultValue={item.name}
-                                            />
+                                            {item.name}
                                         </p>
                                     </td>
                                     <td>
                                         <p>{item.power}W/h</p>
                                     </td>
                                     <td className="group_detail">
-                                        {item.groupName ? <a href="#" className="btn-download add_btn" data-mdb-toggle="modal" data-mdb-target="#EditModal">
+                                        {item.groupName ? <a href="#" className="btn-download detail_btn" data-mdb-toggle="modal" data-mdb-target="#EditModal">
                                             <span className="text" onClick={() => {
                                                 setGroupId(item.groupId)
                                             }}>Detail</span>
-                                        </a> : <span>Detail</span>}
+                                        </a> : <span className="item_detail">Chưa Binding</span>}
                                     </td>
+                                    {/* <td>{item.groupId ? <></> : <span className="delete_device delete_device_btn">Delete</span>}</td> */}
+                                    <td>{item.groupId ? <span className="delete_device delete_device_btn">                                        <Popconfirm
+                                        placement="top"
+                                        title={text}
+                                        description={description}
+                                        onConfirm={() => removeGroup(item.groupId)}
+                                        okText={<span className="custom-ok-button">Yes</span>}
+                                        cancelText="No"
+                                    >
+                                        Delete
+                                    </Popconfirm>
+                                    </span> : <></>}</td>
                                     <td>
                                         {item.groupName ? <span>{item.groupName}</span> : <span>Chưa Binding</span>}
                                     </td>
                                     <td>
-                                        <span> {item.isDeviceOn}</span>
+                                        <span> {item.isDeviceOn ? <>on</> : <>off</>}</span>
                                     </td>
                                 </tr>
                             ))}
                         </tbody>
                         {selectedDevices.length >= 2 ? (
-                            <a href="#" className="btn-download add_btn" data-mdb-toggle="modal" data-mdb-target="#exampleModal">
+                            <a href="#" className="btn-download add_btn_device" data-mdb-toggle="modal" data-mdb-target="#exampleModal">
                                 <span className="text">Add Binding</span>
                             </a>
                         ) : (
-                            <a href="#" className="btn-download add_btn">
+                            <a href="#" className="btn-download add_btn_device">
                                 <span className="text" onClick={() => setShowMessage(true)}>Add Binding</span>
                             </a>
                         )}
                         {showMessage && message.warning("Vui lòng chọn ít nhất 2 thiết bị.")}
                         <AddBinding selectedDevices={selectedDevices} setSelectedDevices={setSelectedDevices} />
-                        <EditBinding groupId={groupId} setGroupId={setGroupId}/>
+                        <EditBinding groupId={groupId} setGroupId={setGroupId} listDevice={listDevice} />
                     </table>
                 </div>
             </div>
