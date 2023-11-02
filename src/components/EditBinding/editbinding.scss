@@ -44,3 +44,15 @@
         }
     }
 }
+
+.btn_save_edit{
+    padding: 6px 14px;
+    font-size: 16px;
+    border-radius: 6px;
+    background-color: rgb(24, 127, 196) !important;
+    color: white;
+    &:hover{
+        background-color: rgb(11, 84, 133) !important;
+        color: white;
+    }
+}

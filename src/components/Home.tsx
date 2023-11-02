@@ -66,7 +66,7 @@ const Sidebar = () => {
 
   const handleLogout = () => {
     Modal.confirm({
-      content: ("confirmLogout"),
+      content: ("Are you sure you want to log out?"),
       onOk: () => {
         localStorage.removeItem("token");
         userStore.socket?.disconnect();
