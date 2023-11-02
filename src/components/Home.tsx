@@ -37,7 +37,22 @@ const Sidebar = () => {
 
 
   const [isAdmin, setIsAdmin] = useState(false);
+
+
   const userStore = useSelector((store: StoreType) => store.userStore);
+
+  const dispatch = useDispatch()
+  const navigate = useNavigate();
+
+
+  useEffect(() => {
+    if (userStore.data == null) {
+
+      navigate("/login");
+    }
+  }, [userStore])
+
+
 
   const checkAdmin = () => {
     if (userStore.data?.isAdmin) {
@@ -48,8 +63,7 @@ const Sidebar = () => {
   useEffect(() => {
     checkAdmin()
   }, [userStore])
-  const dispatch = useDispatch()
-  const navigate = useNavigate();
+
   const handleLogout = () => {
     Modal.confirm({
       content: ("confirmLogout"),
@@ -61,6 +75,7 @@ const Sidebar = () => {
       },
     });
   };
+
 
   const items: MenuProps['items'] = [
     {
@@ -87,50 +102,58 @@ const Sidebar = () => {
   return (
     <>
       <section id="sidebar" className={sidebarHidden ? 'hide' : ''}>
-        <a href="#" className="brand">
-          <i className="bx bxs-smile" />
-          <span className="text">Admin</span>
-        </a>
-        <ul className="side-menu top">
-          <li className={activeMenuItem === 0 ? 'active' : ''}>
-            <Link to={""} onClick={() => handleMenuItemClick(0)}>
-              <i className="bx bxs-dashboard" />
-              <Link to={"/"} className="text">Dashboard</Link>
-            </Link>
-          </li>
-          <li className={activeMenuItem === 1 ? 'active' : ''}>
-            <Link to={"add_product"} onClick={() => handleMenuItemClick(1)}>
-              <i className="bx bxs-shopping-bag-alt" />
-              <Link to={"device"} className="text">Device</Link>
-            </Link>
-          </li>
-          <li className={activeMenuItem === 2 ? 'active' : ''}>
-            <Link to={"binding"} onClick={() => handleMenuItemClick(2)}>
-              <i className="bx bxs-doughnut-chart" />
-              <Link to={"binding"} className="text">Binding</Link>
-            </Link>
-          </li>
-          <li className={activeMenuItem === 3 ? 'active' : ''}>
-            <Link to={"list_user"} onClick={() => handleMenuItemClick(3)}>
-              <i className="bx bxs-group" />
-              <Link to={"users"} className="text">Users</Link>
-            </Link>
-          </li>
-          <li className={activeMenuItem === 4 ? 'active' : ''}>
-            <Link to={"order"} onClick={() => handleMenuItemClick(4)}>
-              <i className="bx bxs-dashboard" />
-              <Link to={"order"} className="text">Bill</Link>
-            </Link>
-          </li>
-        </ul>
-        <ul className="side-menu">
-          <li>
-            <a href="#" className="logout">
-              <i className="bx bxs-log-out-circle" />
-              <span className="text">Logout</span>
+        {userStore.data?.isAdmin ? (
+          <>
+            <a href="#" className="brand">
+              <i className="bx bxs-smile" />
+              <span className="text">Admin</span>
             </a>
-          </li>
-        </ul>
+            <ul className="side-menu top">
+              <li className={activeMenuItem === 1 ? 'active' : ''}>
+                <Link to={"/device"} onClick={() => handleMenuItemClick(1)}>
+                  <i className="bx bxs-shopping-bag-alt" />
+                  <span className="text">Device</span>
+                </Link>
+              </li>
+              <li className={activeMenuItem === 2 ? 'active' : ''}>
+                <Link to={"/binding"} onClick={() => handleMenuItemClick(2)}>
+                  <i className="bx bxs-doughnut-chart" />
+                  <span className="text">Binding</span>
+                </Link>
+              </li>
+              <li className={activeMenuItem === 3 ? 'active' : ''}>
+                <Link to={"/users"} onClick={() => handleMenuItemClick(3)}>
+                  <i className="bx bxs-group" />
+                  <span className="text">Users</span>
+                </Link>
+              </li>
+            </ul>
+            <ul className="side-menu">
+              <li>
+                <a href="#" className="logout">
+                  <i className="bx bxs-log-out-circle" />
+                  <span className="text" onClick={() => handleLogout()}>Logout</span>
+                </a>
+              </li>
+            </ul>
+          </>
+        ) : (
+          <>
+            <a href="#" className="brand">
+              <i className="bx bxs-smile" />
+              <span className="text">Admin</span>
+            </a>
+            <ul className="side-menu">
+              <li>
+                <a href="#" className="logout">
+                  <i className="bx bxs-log-out-circle" />
+                  <span className="text" onClick={() => handleLogout()}>Logout</span>
+                </a>
+              </li>
+            </ul>
+          </>
+        )}
+
       </section>
       <section id="content">
         {/* NAVBAR */}
@@ -141,20 +164,6 @@ const Sidebar = () => {
             </div>
           </form>
           <>
-            {userStore?.data?.userName ? (
-              <Dropdown menu={{ items }} placement="bottom" arrow>
-                <span className="feature_item"  >{userStore.data.userName} </span>
-              </Dropdown>
-            ) : (
-              <>
-                <span onClick={() => navigate("/login")} className="feature_item">
-                  Login
-                </span>
-                <span onClick={() => navigate("/register")} className="feature_item">
-                  Register
-                </span>
-              </>
-            )}
           </>
           <input type="checkbox" id="switch-mode" onChange={handleDarkModeChange} checked={darkMode} hidden />
           <label htmlFor="switch-mode" className="switch-mode" />

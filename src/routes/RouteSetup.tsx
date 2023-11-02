@@ -17,8 +17,6 @@ export default function RouteSetup() {
         {/* Home - Navbar + Footer */}
 
         <Route path="/" element={<Homemm />}>
-          <Route path="/" element={<Home />}></Route>
-
           <Route path="/device" element={<Device />}></Route>
           <Route path="/user-device" element={<DeviceUser />}></Route>
 
