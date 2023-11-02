@@ -258,8 +258,18 @@ export default function Productlist() {
             }
         })
     }, [unpairId])
-    const [active, setActive] = useState(true)
+    const [active, setActive] = useState<{ [key: number]: boolean }>({});
     console.log("active", active);
+
+    const toggleActiceStatus = (userId: number) => {
+        if (userId) {
+            if (userStore.socket) {
+                userStore.socket.emit('toggle', userId);
+
+            }
+        }
+    };
+    console.log("listDevice", listDevice);
 
 
     return (
@@ -342,7 +352,7 @@ export default function Productlist() {
                                         }}>Detail</button>
                                     </td>
                                     <td>
-                                        <Switch checked={active} />
+                                        <Switch checked={item.isDeviceOn} onChange={() => { toggleActiceStatus(item.node_id) }} />
 
                                     </td>
                                 </tr>
