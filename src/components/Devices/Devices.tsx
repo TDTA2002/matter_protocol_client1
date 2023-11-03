@@ -86,9 +86,9 @@ export default function Productlist() {
     console.log("listDevice", listDevice);
     function handleSearchQrCode(node_id: number, idDevice: string) {
         // Lấy dữ liệu từ localStorage
-
         const decodeTemp = localStorage.getItem('decodeData');
         setLoadingState((prevState) => ({ ...prevState, [idDevice]: true }));
+        console.log("tempId", tempId);
         if (decodeTemp) {
             const decodeData = JSON.parse(decodeTemp);
             for (let i in decodeData) {
@@ -104,7 +104,7 @@ export default function Productlist() {
                             console.log("isWithin10Minutes", isWithin10Minutes);
                             console.log("time", time);
                             if (isWithin10Minutes) {
-                                setLoadingState((prevState) => ({ ...prevState, [tempId]: false }));
+                                setLoadingState((prevState) => ({ ...prevState, [idDevice]: false }));
                                 // mã QR còn hạn => show mã
                                 setQR_Code(a)
                                 setShowModal(true)
@@ -210,17 +210,17 @@ export default function Productlist() {
 
     useEffect(() => {
         userStore.socket?.on("decodeFailed", (notification: string) => {
-            // setLoading(false)
+
             // lắng nghe và thông báo các lỗi 
             if (notification != "") {
                 message.error(notification)
+                setLoadingState((prevState) => ({ ...prevState, [tempId]: false }));
             }
 
         })
-    }, [])
+    }, [tempId])
 
     function handleUnpair(id: string, node_id: number) {
-
         setUnpairId(id)
         if (userStore.socket) {
             userStore.socket.emit("unpairDevice", {
