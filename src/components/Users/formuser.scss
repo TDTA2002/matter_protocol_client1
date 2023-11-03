@@ -11,15 +11,20 @@
 
 .account_form {
     min-height: 100vh;
-    background: #f0faff;
-
+    // background: #f0faff;
+    background-image: url("https://ifdesign.com/ifservice/795993/342804/00000000-0000-0000-0000-000000000000/01_main_entry_img.jpg");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
     width: 100vw;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-
-
+.submit_btn_res {
+    background-color: #4070f4;
+    color: white;
+}
 .wrapper {
     // display: flex;
     //   align-items: center;
@@ -29,11 +34,8 @@
     width: 100%;
     border-radius: 12px;
     padding: 20px 30px 120px;
-    background: #4070f4;
-    box-shadow: 0 5px 10px rgba(0,
-            0,
-            0,
-            0.1);
+    background: rgba(#2e3036, 0.8);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
     overflow: hidden;
 }
 

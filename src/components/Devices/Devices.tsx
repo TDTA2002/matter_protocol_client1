@@ -3,7 +3,7 @@ import './devices.scss'
 import { useDispatch, useSelector, useStore } from 'react-redux'
 import { StoreType } from '@/store'
 import QrCode from './component/QrCode'
-import { Switch, message,Popconfirm } from 'antd'
+import { Switch, message, Popconfirm } from 'antd'
 import AddDevice from '../AddDevice/AddDevice'
 import { ListBinding } from '@/store/slices/user.slices'
 import { useNavigate } from 'react-router'
@@ -81,9 +81,9 @@ export default function Productlist() {
     console.log("listDevice", listDevice);
     function handleSearchQrCode(node_id: number, idDevice: string) {
         // Lấy dữ liệu từ localStorage
-
         const decodeTemp = localStorage.getItem('decodeData');
         setLoadingState((prevState) => ({ ...prevState, [idDevice]: true }));
+        console.log("tempId", tempId);
         if (decodeTemp) {
             const decodeData = JSON.parse(decodeTemp);
             for (let i in decodeData) {
@@ -99,7 +99,7 @@ export default function Productlist() {
                             console.log("isWithin10Minutes", isWithin10Minutes);
                             console.log("time", time);
                             if (isWithin10Minutes) {
-                                setLoadingState((prevState) => ({ ...prevState, [tempId]: false }));
+                                setLoadingState((prevState) => ({ ...prevState, [idDevice]: false }));
                                 // mã QR còn hạn => show mã
                                 setQR_Code(a)
                                 setShowModal(true)
@@ -205,17 +205,17 @@ export default function Productlist() {
 
     useEffect(() => {
         userStore.socket?.on("decodeFailed", (notification: string) => {
-            // setLoading(false)
+
             // lắng nghe và thông báo các lỗi 
             if (notification != "") {
                 message.error(notification)
+                setLoadingState((prevState) => ({ ...prevState, [tempId]: false }));
             }
 
         })
-    }, [])
+    }, [tempId])
 
     function handleUnpair(id: string, node_id: number) {
-
         setUnpairId(id)
         if (userStore.socket) {
             userStore.socket.emit("unpairDevice", {
@@ -263,8 +263,6 @@ export default function Productlist() {
     }, [unpairId])
     const [active, setActive] = useState(true)
     console.log("active", active);
-
-
     return (
         <main>
             {showModal && <QrCode QR_Code={QR_Code} setQR_Code={setQR_Code} setShowModal={setShowModal} />}
@@ -299,7 +297,6 @@ export default function Productlist() {
                         <thead>
                             <tr>
                                 <th>STT</th>
-
                                 <th>Name</th>
                                 <th>Power</th>
                                 <th>Group name</th>
@@ -311,7 +308,7 @@ export default function Productlist() {
                         <tbody>
                             {listDevice?.map((item: any, index: number) => (
                                 <tr key={Date.now() * Math.random()}>
-                                    <td>
+                                    <td style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
                                         <span>{index + 1}</span>
                                     </td>
                                     <td>

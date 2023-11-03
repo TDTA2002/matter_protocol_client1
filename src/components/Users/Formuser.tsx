@@ -121,11 +121,11 @@ export default function FormUser() {
                         <form onSubmit={(e) => {
                             handleRegister(e)
                         }}>
-                            <input name='userName' type="text" placeholder="Full name" required />
+                            <input name='userName' type="text" placeholder="User name" required />
                             <input name='email' type="email" placeholder="Email address" required />
                             <input name='password' type="password" placeholder="Password" required />
-                            <input name='confirmpassword' type="password" placeholder="Password" required />
-                            <input type="submit" defaultValue="Signup" />
+                            <input name='confirmpassword' type="password" placeholder="Confirm password" required />
+                            <input className='submit_btn_res' type="submit" defaultValue="Signup" />
                         </form>
                     </div>
                     <div className="form login">
