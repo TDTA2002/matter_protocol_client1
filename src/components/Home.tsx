@@ -106,7 +106,7 @@ const Sidebar = () => {
           <>
             <a href="#" className="brand">
               <i className="bx bxs-smile" />
-              <span className="text">Admin</span>
+              <span className="text">{userStore.data.userName}</span>
             </a>
             <ul className="side-menu top">
               <li className={activeMenuItem === 1 ? 'active' : ''}>
