@@ -50,7 +50,7 @@ export default function DeviceUser() {
                         data-mdb-target="#exampleModal">Add New</span>
                 </a>
             </div>
-            <AddDevice />
+            {/* <AddDevice /> */}
 
             <div className="table-data">
                 <div className="order">

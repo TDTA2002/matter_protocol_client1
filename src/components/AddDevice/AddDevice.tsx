@@ -6,9 +6,11 @@ import { StoreType } from '@/store';
 type InputRef = {
     input: HTMLInputElement;
 };
+interface AddDeviceProps {
+    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-
-export default function AddDevice() {
+const AddDevice: React.FC<AddDeviceProps> = ({ setIsLoading }) => {
     const userStore = useSelector((store: StoreType) => {
         return store.userStore
     })
@@ -32,6 +34,7 @@ export default function AddDevice() {
             if (formData) {
                 if (userStore.socket) {
                     userStore.socket.emit('addDevices', formData);
+                    setIsLoading(true)
                 }
             }
         }
@@ -44,32 +47,32 @@ export default function AddDevice() {
                     <form onSubmit={(e: FormEvent) => handleCreate(e)}>
                         <div className="modal-content">
                             <div className="modal-header">
-                                <h1>Thêm Sản Phẩm</h1>
+                                <h1>Add Device</h1>
                                 <button type="button" className="btn-close" data-mdb-dismiss="modal" aria-label="Close" />
                             </div>
                             <div className="modal-body">
                                 <div className='detailproduct'>
                                     <div>
                                         <div>
-                                            Tên <br />
-                                            <Input name="name" type="text" placeholder='Tên' ref={nameRef} />
+                                            Name <br />
+                                            <Input name="name" type="text" placeholder='Name' ref={nameRef} />
                                         </div>
                                     </div>
                                     <div>
                                         <div>
                                             Power <br />
-                                            <Input name="power" type="text" placeholder='Mô tả' ref={powerRef} />
+                                            <Input name="power" type="text" placeholder='Power' ref={powerRef} />
                                         </div>
                                         <div>
                                             Code <br />
-                                            <Input name="code" type="text" placeholder='Giá' ref={codeRef} />
+                                            <Input name="code" type="text" placeholder='code' ref={codeRef} />
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" data-mdb-dismiss="modal">Đóng</button>
-                                <button type='submit' className="btn btn-primary" data-mdb-dismiss="modal">Lưu</button>
+                                <button type="button" className="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+                                <button type='submit' className="btn_save_device" data-mdb-dismiss="modal">Save</button>
                             </div>
                         </div>
                     </form>
@@ -78,3 +81,4 @@ export default function AddDevice() {
         </>
     );
 }
+export default AddDevice;

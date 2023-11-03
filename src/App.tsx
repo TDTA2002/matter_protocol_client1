@@ -6,14 +6,12 @@ import { StoreType } from './store';
 import { Device, User, userAction, ListBinding, ListU, ListUser } from './store/slices/user.slices';
 import { Socket, io } from 'socket.io-client';
 import { Chart } from 'chart.js';
-import { useNavigate } from 'react-router-dom';
 
 function App() {
   const dispatch = useDispatch()
   const userStore = useSelector((store: StoreType) => {
     return store.userStore
   })
-
   useEffect(() => {
     if (!userStore.data) {
       let token = localStorage.getItem("token");

@@ -75,6 +75,7 @@ export interface ListPerById {
     name: string;
     user_id: string;
     node_id: number;
+    isDeviceOn: boolean;
     active: boolean;
 }
 export interface UserState {

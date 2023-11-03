@@ -132,7 +132,7 @@
                         }
                     }
 
-                    
+
                 }
             }
         }
@@ -148,6 +148,20 @@
     border-top-color: #ffffff;
     animation: spin 1s infinite linear;
 }
+
+.loading-spin {
+    width: 100px;
+    height: 100px;
+    border: 3px solid rgba(109, 108, 108, 0.3);
+    border-radius: 50%;
+    border-top-color: #161010;
+    animation: spin 1s infinite linear;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
 
 .toggle {
     width: 50px;

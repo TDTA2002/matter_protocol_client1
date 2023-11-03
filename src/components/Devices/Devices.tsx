@@ -17,7 +17,13 @@ interface Device {
     power: number;
     groupName: string;
     groupId: string;
-    // timeCreate: string;
+    active: boolean;
+}
+interface DeviceUser {
+    id: string;
+    name: string;
+    user_id: string;
+    node_id: number;
     active: boolean;
 }
 
@@ -42,13 +48,11 @@ export default function Productlist() {
     const [tempId, setTempId] = useState("")
     const [unpairId, setUnpairId] = useState("");
     const [Id, setId] = useState("");
-    const [loading, setLoading] = useState(false);
-    const [add, setAdd] = useState(true)
-    const [count, setCount] = useState(1)
-    const [search, setSearch] = useState('')
     const text = 'Are you sure to unpair this Device?';
     const description = 'Unpair the Device';
     const [loadingState, setLoadingState] = useState<Record<string, boolean>>({});
+    const [isLoading, setIsLoading] = useState(false);
+
     useEffect(() => {
         if (userStore.Device && userStore.Device.length > 0) {
             setListDevice(userStore.Device);
@@ -77,6 +81,7 @@ export default function Productlist() {
                 setShouldUpdateListDevice(false);
             }
         }
+        setIsLoading(false)
     }, [shouldUpdateListDevice, listDevice, listBinding]);
     console.log("listDevice", listDevice);
     function handleSearchQrCode(node_id: number, idDevice: string) {
@@ -261,8 +266,38 @@ export default function Productlist() {
             }
         })
     }, [unpairId])
-    const [active, setActive] = useState(true)
+    const [active, setActive] = useState<{ [key: number]: boolean }>({});
     console.log("active", active);
+
+    const toggleActiceStatus = (userId: number) => {
+        if (userId) {
+            if (userStore.socket) {
+                userStore.socket.emit('toggle', userId);
+
+            }
+        }
+    };
+    const UsertoggleActiceStatus = (userId: number, active: boolean) => {
+        console.log("active", active);
+
+        if (active) {
+            if (userId) {
+                if (userStore.socket) {
+                    userStore.socket.emit('toggle', userId);
+                }
+            }
+        } else {
+            message.warning("You have not been granted permission to use it")
+        }
+
+    };
+    // const [listDevice, setListDevice] = useState<DeviceUser[]>([]);
+    // const [isOn, setIsOn] = useState(false);
+
+    // const toggleSwitch = () => {
+    //     setIsOn(!isOn);
+    // };
+
     return (
         <main>
             {showModal && <QrCode QR_Code={QR_Code} setQR_Code={setQR_Code} setShowModal={setShowModal} />}
@@ -283,8 +318,19 @@ export default function Productlist() {
                         </li>
                     </ul>
                 </div>
+                <a className="btn-download">
+                    <i className="bx bxs-cloud-download" />
+                    <span
+                        className="text"
+                        data-mdb-toggle="modal"
+                        data-mdb-target="#exampleModal"
+                    >
+                        Add New
+                    </span>
+                </a>
+                <AddDevice setIsLoading={setIsLoading} />
             </div>
-            <AddDevice />
+
 
             <div className="table-data">
                 <div className="order">
@@ -294,59 +340,87 @@ export default function Productlist() {
                         <i className="bx bx-filter" />
                     </div>
                     <table>
-                        <thead>
-                            <tr>
-                                <th>STT</th>
-                                <th>Name</th>
-                                <th>Power</th>
-                                <th>Group name</th>
-                                <th>Action</th>
-                                <th>Status</th>
-
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {listDevice?.map((item: any, index: number) => (
-                                <tr key={Date.now() * Math.random()}>
-                                    <td style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                                        <span>{index + 1}</span>
-                                    </td>
-                                    <td>
-                                        <p><input type="text" defaultValue={item.name} /></p>
-                                    </td>
-                                    <td>
-                                        <p>{item.power} W/h</p>
-                                    </td>
-                                    <td>
-                                        {item.groupName ? <span>{item.groupName}</span> : <span>Chưa Binding</span>}
-                                    </td>
-                                    <td>
-
-                                        <button className="status completed" onClick={() => handleSearchQrCode(item.node_id, item.id)}>
-                                            {loadingState[item.id] ? <span className='loading-spinner'></span> : "Share Connect"}
-                                        </button>
-                                        <Popconfirm
-                                            placement="top"
-                                            title={text}
-                                            description={description}
-                                            onConfirm={() => handleUnpair(item.id, item.node_id)}
-                                            okText={<span className="custom-ok-button">Yes</span>}
-                                            cancelText="No"
-                                        >
-                                            <button className="status delete"
-                                            >Unpair</button>
-                                        </Popconfirm>
-                                        <button className="status pending" onClick={() => {
-                                            handleShowChart(item.id)
-                                            navigate("/chart")
-                                        }}>Detail</button>
-                                    </td>
-                                    <td>
-                                        <Switch checked={active} />
-
-                                    </td>
+                        {
+                            userStore.data?.isAdmin ? (
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Name</th>
+                                    <th>Power</th>
+                                    <th>Group name</th>
+                                    <th>Action</th>
+                                    <th>Status</th>
                                 </tr>
-                            ))}
+                            ) : (
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Name</th>
+                                    <th>Status</th>
+                                </tr>
+                            )
+                        }
+                        <tbody>
+
+                            {
+                                userStore.data?.isAdmin ? (
+                                    isLoading ? (
+                                        <span className="loading-spin"></span>
+                                    ) : (
+                                        listDevice?.map((item: any, index: number) => (
+                                            <tr key={Date.now() * Math.random()}>
+                                                <td>
+                                                    <span>{index + 1}</span>
+                                                </td>
+                                                <td>
+                                                    <p>{item.name}</p>
+                                                </td>
+                                                <td>
+                                                    <p>{item.power} W/h</p>
+                                                </td>
+                                                <td>
+                                                    {item.groupName ? <span>{item.groupName}</span> : <span>Chưa Binding</span>}
+                                                </td>
+                                                <td>
+                                                    <button className="status completed" onClick={() => handleSearchQrCode(item.node_id, item.id)}>
+                                                        {loadingState[item.id] ? <span className='loading-spinner'></span> : "Share Connect"}
+                                                    </button>
+                                                    <Popconfirm
+                                                        placement="top"
+                                                        title={text}
+                                                        description={description}
+                                                        onConfirm={() => handleUnpair(item.id, item.node_id)}
+                                                        okText={<span className="custom-ok-button">Có</span>}
+                                                        cancelText="Không"
+                                                    >
+                                                        <button className="status delete">Unpair</button>
+                                                    </Popconfirm>
+                                                    <button className="status pending" onClick={() => {
+                                                        handleShowChart(item.id)
+                                                        navigate("/chart")
+                                                    }}>Chi tiết</button>
+                                                </td>
+                                                <td>
+                                                    <Switch checked={item.isDeviceOn} onChange={() => { toggleActiceStatus(item.node_id) }} />
+                                                </td>
+                                            </tr>
+                                        ))
+                                    )
+                                ) : (
+                                    userStore.ListPerById?.map((item: any, index: number) => (
+                                        <tr key={Date.now() * Math.random()}>
+                                            <td>
+                                                <span>{index + 1}</span>
+                                            </td>
+                                            <td>
+                                                {item.name}
+                                            </td>
+                                            <td>
+                                                <Switch checked={item.isDeviceOn} onChange={() => { UsertoggleActiceStatus(item.node_id, item.active) }} />
+                                            </td>
+                                        </tr>
+                                    ))
+                                )
+                            }
+
                         </tbody>
                     </table>
 
